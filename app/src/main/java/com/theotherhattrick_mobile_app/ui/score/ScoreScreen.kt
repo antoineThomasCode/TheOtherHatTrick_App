@@ -1,4 +1,4 @@
-package com.theotherhattrick_mobile_app.ui.screen.score
+package com.theotherhattrick_mobile_app.ui.score
 
 import androidx.compose.runtime.Composable
 

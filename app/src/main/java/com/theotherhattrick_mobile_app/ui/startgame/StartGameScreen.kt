@@ -1,4 +1,4 @@
-package com.theotherhattrick_mobile_app.ui.screen.startgame
+package com.theotherhattrick_mobile_app.ui.startgame
 
 
 
@@ -32,9 +32,12 @@ import androidx.compose.ui.unit.sp
 import com.antoinethomas.theotherhattrick_mobile_app.R
 
 @Composable
-fun StartGame(
-    modifier: Modifier = Modifier
+fun StartGameScreen(
+    modifier: Modifier = Modifier,
+    onStartGame: () -> Unit
+
 ) {
+    // mettre plutot dans une surface ? peut être dans une Box ? quelle solution pour un composant container qui contient toute la vue ? (le screen)
     Column(
         modifier = Modifier
             .width(IntrinsicSize.Max)
@@ -149,6 +152,7 @@ fun StartGame(
         Button(
             onClick = {
                       println("je capte le bouton")
+                      // TODO -> ici un UI event doit passer à l'autre screen InGame
             },
             modifier = Modifier.padding(12.dp)
 

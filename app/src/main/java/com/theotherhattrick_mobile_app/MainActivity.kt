@@ -1,54 +1,16 @@
 package com.antoinethomas.theotherhattrick_mobile_app
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import com.antoinethomas.theotherhattrick_mobile_app.ui.theme.TheOtherHatTrick_Mobile_AppTheme
-import com.theotherhattrick_mobile_app.ui.screen.startgame.StartGame
+import com.theotherhattrick_mobile_app.ui.ingame.StartActivity
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            TheOtherHatTrick_Mobile_AppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Game()
-                }
-            }
-        }
+
+        val intent = Intent(this, StartActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
-
-@Composable
-fun Game(modifier: Modifier = Modifier) {
-
-    Column {
-        StartGame(
-            Modifier
-                .background(
-                    color = Color.Red
-                )
-                .padding(
-                    vertical = 40.dp
-                )
-        )
-    }
-
-}
-
-
-
