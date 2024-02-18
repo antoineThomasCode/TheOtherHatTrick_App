@@ -3,6 +3,7 @@ package com.theotherhattrick_mobile_app.ui.startgame
 
 
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -30,14 +32,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.antoinethomas.theotherhattrick_mobile_app.R
+import com.theotherhattrick_mobile_app.ui.ingame.InGameActivity
 
 @Composable
 fun StartGameScreen(
-    modifier: Modifier = Modifier,
-    onStartGame: () -> Unit
-
+    viewModel: StartGameViewModel,
+    modifier: Modifier = Modifier
 ) {
-    // mettre plutot dans une surface ? peut être dans une Box ? quelle solution pour un composant container qui contient toute la vue ? (le screen)
+
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .width(IntrinsicSize.Max)
@@ -101,16 +104,17 @@ fun StartGameScreen(
             fontWeight = FontWeight.Bold
 
         )
-
         TextField(
             value = playerOneNameInput,
             onValueChange = {
                 playerOneNameInput = it
+                viewModel.onUiEvent(StartGameUiEvent.PlayerOneNameChanged(name = it))
             },
             modifier = Modifier
                 .padding(12.dp)
                 .fillMaxWidth()
         )
+
 
         Text(
             text = "Joueur N°2",
@@ -124,12 +128,11 @@ fun StartGameScreen(
             value = playerTwoNameInput,
             onValueChange = {
                 playerTwoNameInput = it
+                viewModel.onUiEvent(StartGameUiEvent.PlayerTwoNameChanged(name = it))
             },
             modifier = Modifier
                 .padding(12.dp)
                 .fillMaxWidth()
-
-
         )
         Text(
             text = "Joueur N°3",
@@ -143,16 +146,28 @@ fun StartGameScreen(
             value = playerThreeNameInput,
             onValueChange = {
                 playerThreeNameInput = it
+                viewModel.onUiEvent(StartGameUiEvent.PlayerThreeNameChanged(name = it))
             },
             modifier = Modifier
                 .padding(12.dp)
                 .fillMaxWidth()
-
         )
+        if (viewModel.isErrorMessageDisplay) {
+            Text(text = "Vous devez renseigner le nom des joueur avant de commander la partie")
+        }
+        
         Button(
             onClick = {
-                      println("je capte le bouton")
-                      // TODO -> ici un UI event doit passer à l'autre screen InGame
+                viewModel.onUiEvent(StartGameUiEvent.StartGameClicked())
+                if (viewModel.isReadyToStartGame) {
+                    // Convertir la liste des joueurs en ArrayList pour la passer via l'intent
+                    val playersArrayList = ArrayList(viewModel.playersList)
+
+                    val intent = Intent(context, InGameActivity::class.java).apply {
+                        putStringArrayListExtra("playersList", playersArrayList)
+                    }
+                    context.startActivity(intent)
+                }
             },
             modifier = Modifier.padding(12.dp)
 

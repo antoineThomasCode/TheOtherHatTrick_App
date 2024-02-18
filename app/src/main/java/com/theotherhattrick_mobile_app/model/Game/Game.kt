@@ -7,9 +7,13 @@ import Model.Player.RealPlayer
 import Model.Player.VirtualPlayer
 
 
-class Game {
+class Game (
+    playersList : List<String>
+) {
 
-    val players: MutableList<Player> = createPlayers()
+
+    val players: MutableList<Player> = createPlayers(playersList)
+
 
     private val board = Board(theSeventhProp = PropCard.dealCard(players))
 
@@ -19,16 +23,10 @@ class Game {
         while (theOtherHatTrickForfeit < 3) {
             players.forEach { player ->
 
-
-                println()
-                println("________________________________________________")
-                println("______________   JOUEUR SUIVANT   ______________")
-                println("________________________________________________")
-
                 val isSuccess = player.playTour(this, board)
 
                 if (board.getVisibleTrick() == TrickCard.OTHERHATTRICK) {
-                    println("dernier tour ! Tentez de marquer The Other Hat Trick")
+
                     if (isSuccess) {
                         println("${player.name} vient de gagner 6 points ! trop fort le gars !!!")
                         return
@@ -49,21 +47,20 @@ class Game {
     }
 
 
-    private fun createPlayers(): MutableList<Player> {
+    private fun createPlayers(
+        playersList: List<String>
+    ): MutableList<Player> {
         val players = mutableListOf<Player>()
-        while (players.size < 3) {
-            println("________________")
-            println("Entrez le nom d'un joueur  (ou 'IA' pour ajouter un joueur virtuel) :")
-            val name = readlnOrNull()
+        playersList.forEach { playerName ->
+            println(playerName)
+            val player = if (playerName.equals("IA", ignoreCase = true)) {
 
-            if (name != null) {
-                val player = if (name.equals("IA", ignoreCase = true)) {
-                    VirtualPlayer("Joueur IA ")
-                } else {
-                    RealPlayer(name)
-                }
-                players.add(player)
+                VirtualPlayer("Joueur IA ")
+            } else {
+                RealPlayer(playerName)
             }
+            println(player.name)
+            players.add(player)
         }
         return players
     }

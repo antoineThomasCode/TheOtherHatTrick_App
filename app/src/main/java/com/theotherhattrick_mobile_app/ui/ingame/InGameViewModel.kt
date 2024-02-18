@@ -1,10 +1,13 @@
 package com.theotherhattrick_mobile_app.ui.ingame
 
+import Model.Game.Game
+import Model.Player.Player
 import androidx.lifecycle.ViewModel
 
-class InGameViewModel : ViewModel()
+class InGameViewModel(
+    val game : Game
+) : ViewModel()
 {
-    // définir les données dont j'ai besoin pour l'écran
-    // Inititaliser les view modèle dans les activité
-    //
+
+
 }
